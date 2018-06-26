@@ -75,6 +75,8 @@ grailsPublish {
     developers = [binle: "Bin Le"]
 //    portalUser = ""
 //    portalPassword = ""
+    // with above configuration, run './gradlew bintrayUpload' command as:
+    //   bintrayUpload -DbintrayUser=ikalizpet  -DbintrayKey=f3e86cc1d...(API key given by bintray)
 }
 
 assets {

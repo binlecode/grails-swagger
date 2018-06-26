@@ -310,6 +310,8 @@ With the annotation above, the swagger API document is separate from the global 
 
 = Change Log
 
+- v 1.2.4: add support for detecting and resolving CGLib proxied controllers
+
 - v 1.2.3: upgrade swagger API core library to 1.5.18 (current stable version) to fix logging override issue
 
 - v 1.2.2: Add annotation based API grouping to split large global json document to multiple modular ones.

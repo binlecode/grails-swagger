@@ -32,14 +32,17 @@ import java.lang.annotation.Target;
 public @interface SwaggerApiGroup {
 
     /**
-     * Api group name
+     * @return the name of the api group
      */
     public String value();  // must be set
 
+    /**
+     * @return the author (owner) of the api group
+     */
     public String author() default "";
 
     /**
-     * Exclude this group of API documents from the default group
+     * @return the boolean value whether to exclude this group of API documents from the default group
      */
     public boolean excludeFromDefault() default true;
 
