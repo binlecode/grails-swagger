@@ -45,7 +45,7 @@ if (Environment.isDevelopmentMode()) {
     logger('grails.app.taglibs', DEBUG, ['STDOUT'], false)
     logger('grails.app.init.swagger.example.BootStrap', DEBUG, ['STDOUT'], false)
     logger('swagger.example.BootStrap', DEBUG, ['STDOUT'], false)
-
+    logger('grails.plugin.logtime', DEBUG, ['STDOUT'], false)
 } else {
 
     root(DEBUG, ['STDOUT'])

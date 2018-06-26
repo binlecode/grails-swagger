@@ -7,10 +7,9 @@ import io.swagger.models.Swagger
 import io.swagger.servlet.Reader
 import io.swagger.util.Json
 import org.apache.commons.lang.StringUtils
+import org.springframework.aop.support.AopUtils
 import org.springframework.context.ApplicationContext
 import org.springframework.context.ApplicationContextAware
-
-import java.lang.annotation.Annotation
 
 class SwaggerService implements ApplicationContextAware {
     Swagger swagger
@@ -39,7 +38,7 @@ class SwaggerService implements ApplicationContextAware {
                     bean.class.getAnnotation(SwaggerApiGroup.class).value() == groupName
         }
 
-        List<Class> swaggerResources = swaggerResourcesAsMap.collect { it.value?.class }
+        List<Class> swaggerResources = swaggerResourcesAsMap.collect(resolveBeanClass)
         if (swaggerResources) {
             Reader.read(groupSwagger, new HashSet<Class<?>>(swaggerResources))
         }
@@ -50,17 +49,29 @@ class SwaggerService implements ApplicationContextAware {
         swagger.setHost(getSwaggerHost())
         Map<String, Object> swaggerResourcesAsMap = applicationContext.getBeansWithAnnotation(Api.class)
 
-//        List<Class> swaggerResources = swaggerResourcesAsMap.collect { it.value?.class }
-
         // exclude @SwaggerApiGroup annotated ones with excludeFromDefault = true
         List<Class> swaggerResources = swaggerResourcesAsMap.findAll { name, bean ->
             !(bean.class.getAnnotation(SwaggerApiGroup.class)?.excludeFromDefault())
-        }.collect { it.value?.class }
+        }.collect(resolveBeanClass)
 
         if (swaggerResources) {
             Reader.read(swagger, new HashSet<Class<?>>(swaggerResources))
         }
         return swagger
+    }
+
+    /**
+     * closure to detect CGLib proxied bean and resolve the target class
+     */
+    static Closure<Class> resolveBeanClass = { Map.Entry kv ->
+        def b = kv.value
+        if (!b) return
+
+        if (AopUtils.isCglibProxy(b)) {
+            return AopUtils.getTargetClass(b)
+        } else {
+            return b.class
+        }
     }
 
     /**

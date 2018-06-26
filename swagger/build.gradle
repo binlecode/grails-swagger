@@ -9,7 +9,8 @@ buildscript {
     }
 }
 
-version "1.2.3"  // 1.2.x for Grails 3.2.x
+// sync with parent project version
+//version "1.2.4"  // 1.2.x for Grails 3.2.x
 group "org.grails.plugins"
 
 apply plugin:"eclipse"
@@ -74,6 +75,8 @@ grailsPublish {
     developers = [binle: "Bin Le"]
 //    portalUser = ""
 //    portalPassword = ""
+    // with above configuration, run './gradlew bintrayUpload' command as:
+    //   bintrayUpload -DbintrayUser=ikalizpet  -DbintrayKey=f3e86cc1d...(API key given by bintray)
 }
 
 assets {
