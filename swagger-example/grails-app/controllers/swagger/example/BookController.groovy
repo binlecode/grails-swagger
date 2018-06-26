@@ -1,5 +1,6 @@
 package swagger.example
 
+import grails.plugin.logtime.LogExecutionTime
 import io.swagger.annotations.Api
 import io.swagger.annotations.ApiImplicitParam
 import io.swagger.annotations.ApiImplicitParams
@@ -50,6 +51,7 @@ class BookController {
                     paramType = 'query',
                     dataType = 'string')
     ])
+    @LogExecutionTime
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         respond Book.list(params), model:[bookCount: Book.count()]

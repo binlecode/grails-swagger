@@ -23,6 +23,7 @@ apply plugin:"asset-pipeline"
 repositories {
     mavenLocal()
     maven { url "https://repo.grails.org/grails/core" }
+    jcenter { url "https://dl.bintray.com/ikalizpet/plugins" }  // logtime grails plugin
 }
 
 dependencyManagement {
@@ -57,6 +58,7 @@ dependencies {
     //** application specific **
     runtime 'org.grails.plugins:grails-console:2.0.8'  // runtime web console
     compile project(':swagger')
+    compile 'grails.plugin.logtime:grails-logtime:0.3'
 }
 
 bootRun {
