@@ -66,13 +66,13 @@ grailsPublish {
     // load bintray user and key from jvm -Dvar for security
     user = System.getProperty('bintrayUser')
     key = System.getProperty('bintrayKey')
-    githubSlug = 'ikaliZpet/grails-appinfo'
+    githubSlug = 'ikaliZpet/grails-swagger'
     license {
         name = 'Apache-2.0'
     }
     title = "Grails Swagger plugin"
     desc = "A Grails plugin to provide generation of Swagger API documents."
-    developers = [binle: "Bin Le"]
+    developers = [binle: "Bin Le (bin.le.code@gmail.com)"]
 //    portalUser = ""
 //    portalPassword = ""
     // with above configuration, run './gradlew bintrayUpload' command as:
