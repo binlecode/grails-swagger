@@ -18,11 +18,12 @@ spring:
         template:
             check-template-location: false
 
-# Spring Actuator Endpoints are Disabled by Default
+# Spring Actuator Endpoints
 endpoints:
-    enabled: false
+    enabled: true
     jmx:
         enabled: true
+        unique-names: true
 
 ---
 grails:
@@ -81,9 +82,7 @@ grails:
                 scriptlets: html
                 taglib: none
                 staticparts: none
-endpoints:
-    jmx:
-        unique-names: true
+
 
 ---
 hibernate:
