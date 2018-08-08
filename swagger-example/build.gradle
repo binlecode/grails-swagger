@@ -55,6 +55,8 @@ dependencies {
     testCompile "org.grails.plugins:geb"
     testRuntime "org.seleniumhq.selenium:selenium-htmlunit-driver:2.47.1"
     testRuntime "net.sourceforge.htmlunit:htmlunit:2.18"
+    // use http builders in functional specs
+    testCompile "org.codehaus.groovy.modules.http-builder:http-builder:0.7"
 
     //** application specific **
     runtime 'org.grails.plugins:grails-console:2.0.8'  // runtime web console
