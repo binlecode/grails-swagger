@@ -16,7 +16,7 @@ class SwaggerServiceIntegrationSpec extends Specification {
     Swagger swaggerModel
 
     def setupSpec() {
-        fileJson = new File("src/test/resources/swagger-api-test.json")
+        fileJson = new File("src/test/resources/test-swagger-api.json")
         swaggerModel = new SwaggerParser().read(fileJson.path)
     }
 
