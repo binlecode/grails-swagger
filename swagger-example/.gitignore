@@ -11,3 +11,4 @@ classes/
 .settings
 .classpath
 swagger-api*.json
+swagger-api*.yaml

@@ -9,6 +9,7 @@ class ApiDocController {
     static responseFormats = ['json']
     static namespace = 'v1'
     static allowedMethods = [getDocuments: "GET"]
+    static final MIME_YAML = 'application/x-yaml'
 
     SwaggerService swaggerService
 
@@ -16,7 +17,7 @@ class ApiDocController {
     Resource[] swaggerUiResources
 
     def getDocuments() {
-        if (request.getHeader('accept') && request.getHeader('accept').indexOf(MediaType.APPLICATION_JSON_VALUE) > -1) {
+        if (request.getHeader('accept')?.contains(MediaType.APPLICATION_JSON_VALUE)) {
             try {
                 String swaggerJson
                 if (params.groupName) {
@@ -30,7 +31,23 @@ class ApiDocController {
             } catch (Exception e) {
                 e.printStackTrace()
                 render status: HttpStatus.INTERNAL_SERVER_ERROR,
-                        text: 'Some error occurred'
+                        text: 'Some error occurred'  //todo: better error msg
+            }
+        } else if (request.getHeader('accept')?.contains(MIME_YAML)) {
+            try {
+                String swaggerYaml
+                if (params.groupName) {
+                    swaggerYaml = swaggerService.generateSwaggerGroupDocument(params.groupName, [yaml: true])
+                } else {
+                    swaggerYaml = swaggerService.generateSwaggerDocument(yaml: true)
+                }
+                render contentType: MIME_YAML + ';charset=UTF-8',
+                        text: swaggerYaml
+
+            } catch (Exception e) {
+                e.printStackTrace()
+                render status: HttpStatus.INTERNAL_SERVER_ERROR,
+                        text: 'Some error occurred'  //todo: better error msg
             }
         } else {
             redirect uri: "/webjars/swagger-ui${getSwaggerUiFile()}?url=${request.getRequestURI()}"

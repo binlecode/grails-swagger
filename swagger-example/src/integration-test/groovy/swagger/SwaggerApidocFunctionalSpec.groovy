@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Value
 import spock.lang.Specification
 
 /**
- * This functional testing shows how to call the apidoc endpoint to generate swagger api doc JSON via Gradle
+ * This functional testing shows how to call the apidoc endpoint to generate swaggerModel api doc JSON via Gradle
  * functional testing stage. The test spec also saves the generated JSON file to project root folder by default.
  */
 @Integration
@@ -24,9 +24,11 @@ class SwaggerApidocFunctionalSpec extends Specification {
      * SpringBoot test running with @WebIntegrationTests, which is configured by Grails integration tests.
      */
     @Value('${local.server.port}')
-    Integer serverPort
+    Integer serverPort  // alternatively = System.property('local.server.port')
 
     String serverHostIp = InetAddress.getLocalHost().getHostAddress()
+
+    HTTPBuilder http
 
     def setup() {
     }
@@ -36,11 +38,11 @@ class SwaggerApidocFunctionalSpec extends Specification {
 
     void "test apidoc json"() {
         given:
-        HTTPBuilder http = new HTTPBuilder("http://${serverHostIp}:${serverPort}/apidoc/")
-
-        when: "The apidoc endpoint is called"
         String jsonText
         def json
+
+        when: "The apidoc endpoint is called"
+        http = new HTTPBuilder("http://${serverHostIp}:${serverPort}/apidoc/")
         /*
          * Normally we would use the method "request(GET, JSON)" to return a json result, but with the release
          * of groovy 2.3.0+, which included extensive changes to JSON parsing, the result returned from the
@@ -77,7 +79,38 @@ class SwaggerApidocFunctionalSpec extends Specification {
 
         then: "The json is correct"
         jsonText
-
-        assert json.swagger == '2.0'  // verify JSON swagger version
+        json.swagger == '2.0'  // verify JSON swagger version
+        json.paths.size() > 0
     }
+
+    void "test apidoc yaml"() {
+        given:
+        String yamlText
+        def yaml
+
+        when: "The apidoc endpoint is called with yaml mime type"
+        http = new HTTPBuilder("http://${serverHostIp}:${serverPort}/apidoc/")
+        http.request(Method.GET) { req ->
+            uri.path = 'getDocuments'
+            headers.Accept = 'application/x-yaml'
+
+            response.success = { resp ->
+                yamlText = resp.entity.content.text  // get text content for manual parse later
+                println "yaml  print: \n${yamlText}"
+                new File('swagger-api-test.yaml').withWriter('UTF-8') { writer ->
+                    writer.write(yamlText)
+                }
+            }
+            response.failure = { resp ->
+                println "fail: $resp"
+            }
+        }
+
+        yaml = new org.yaml.snakeyaml.Yaml().load(yamlText)
+
+        then: "The yaml is correct"
+        yaml.swagger == '2.0'
+        yaml.paths.size() > 0
+    }
+
 }
