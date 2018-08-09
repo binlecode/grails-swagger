@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Value
 import spock.lang.Specification
 
 /**
- * This functional testing shows how to call the apidoc endpoint to generate swaggerModel api doc JSON via Gradle
+ * This functional testing shows how to call the apidoc endpoint to generate swagger api doc JSON via Gradle
  * functional testing stage. The test spec also saves the generated JSON file to project root folder by default.
  */
 @Integration

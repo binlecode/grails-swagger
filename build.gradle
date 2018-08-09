@@ -5,7 +5,7 @@ apply plugin: 'idea'
 apply plugin: 'eclipse'
 
 subprojects {
-    version = '1.2.4.1'  // 1.2.x for Grails 3.2.x
+    version = '1.2.5'  // 1.2.x for Grails 3.2.x
 }
 
 // ext {
