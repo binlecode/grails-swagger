@@ -132,3 +132,30 @@ environments:
                 testOnReturn: false
                 jdbcInterceptors: ConnectionState
                 defaultTransactionIsolation: 2 # TRANSACTION_READ_COMMITTED
+
+
+## global swagger info
+swagger:
+    info:
+        description: "PlanRoom Pro API"
+        version: "swagger-2.0"
+        title: "Example Swagger API"
+        termsOfServices: "TBD"
+        contact:
+            name: "Swagger Example API"
+            url: "https://github.com/binlecode/grails-swagger"
+            email: "bin.le.code@gmail.com"
+        license:
+            name: "Apache 2.0"
+            url: "https://www.apache.org/licenses/LICENSE-2.0.html"
+    schemes:
+        - HTTP
+    consumes:
+        - "application/json"
+    securityDefinitions:
+        Bearer:
+            type: 'apiKey'
+            name: 'Authorization'
+server:
+    port: 9090
+
