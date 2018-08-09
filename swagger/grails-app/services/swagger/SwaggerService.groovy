@@ -6,6 +6,7 @@ import io.swagger.annotations.Api
 import io.swagger.models.Swagger
 import io.swagger.servlet.Reader
 import io.swagger.util.Json
+import io.swagger.util.Yaml
 import org.apache.commons.lang.StringUtils
 import org.springframework.aop.support.AopUtils
 import org.springframework.context.ApplicationContext
@@ -16,11 +17,17 @@ class SwaggerService implements ApplicationContextAware {
 
     ApplicationContext applicationContext
 
-    String generateSwaggerDocument() {
+    String generateSwaggerDocument(Map options = [:]) {
+        if (Boolean.parseBoolean(options.yaml as String)) {
+            return getYamlDocument(scanSwaggerResources())
+        }
         return getJsonDocument(scanSwaggerResources())
     }
 
-    String generateSwaggerGroupDocument(String groupName) {
+    String generateSwaggerGroupDocument(String groupName, Map options = [:]) {
+        if (Boolean.parseBoolean(options.yaml as String)) {
+            return getYamlDocument(scanSwaggerGroupResources(groupName))
+        }
         return getJsonDocument(scanSwaggerGroupResources(groupName))
     }
 
@@ -97,6 +104,18 @@ class SwaggerService implements ApplicationContextAware {
             }
         }
         return swaggerJson
+    }
+
+    static String getYamlDocument(Swagger swagger) {
+        String swaggerYaml = null
+        if (swagger != null) {
+            try {
+                swaggerYaml = Yaml.mapper().writeValueAsString(swagger)
+            } catch (JsonProcessingException e) {
+                e.printStackTrace()
+            }
+        }
+        return swaggerYaml
     }
 }
 

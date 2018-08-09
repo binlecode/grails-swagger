@@ -55,6 +55,7 @@ dependencies {
     testCompile 'com.github.fge:json-schema-validator:2.2.6'
     compile group: 'io.swagger', name: 'swagger-models', version: "${swaggerVersion}"
     compile group: 'io.swagger', name: 'swagger-servlet', version: "${swaggerVersion}"
+    compile group: 'io.swagger', name: 'swagger-parser', version: "${swaggerParserVersion}"
     compile "org.webjars:swagger-ui:${swaggerUIVersion}"
 }
 
