@@ -11,9 +11,8 @@ class BookControllerSpec extends Specification implements ControllerUnitTest<Boo
     def populateValidParams(params) {
         assert params != null
 
-        // TODO: Populate valid properties like...
-        //params["name"] = 'someValidName'
-        assert false, "TODO: Provide a populateValidParams() implementation for this generated test suite"
+        // populate valid properties like...
+        params["title"] = 'test-title'
     }
 
     void "Test the index action returns the correct response"() {
@@ -79,7 +78,7 @@ class BookControllerSpec extends Specification implements ControllerUnitTest<Boo
 
         then:
         response.status == UNPROCESSABLE_ENTITY.value()
-        response.json.errors
+        response.json.message.startsWith('Property [title]')
     }
 
     void "Test the show action with a null id"() {
@@ -106,7 +105,7 @@ class BookControllerSpec extends Specification implements ControllerUnitTest<Boo
 
         then:"A model is populated containing the domain instance"
         response.status == OK.value()
-        response.json
+        println response.text
     }
 
     void "Test the update action with a null instance"() {
@@ -157,7 +156,7 @@ class BookControllerSpec extends Specification implements ControllerUnitTest<Boo
 
         then:
         response.status == UNPROCESSABLE_ENTITY.value()
-        response.json.errors
+        response.json.message.startsWith('Property [title]')
     }
 
     void "Test the delete action with a null instance"() {
