@@ -1,0 +1,7 @@
+import swagger.example.g338.rest.Book
+
+model {
+	Book book
+}
+
+json g.render(book, [resolveTemplate: false])

@@ -1,11 +1,13 @@
 ---
 grails:
-    profile: web
+    profile: rest-api
     codegen:
-        defaultPackage: swagger.example
-    spring:
-        transactionManagement:
-            proxies: false
+        defaultPackage: swagger.example.g338.rest
+    gorm:
+        reactor:
+            # Whether to translate GORM events into Reactor events
+            # Disabled by default for performance reasons
+            events: false
 info:
     app:
         name: '@info.app.name@'
@@ -18,54 +20,42 @@ spring:
         template:
             check-template-location: false
 
-# Spring Actuator Endpoints
+# Spring Actuator Endpoints are Disabled by Default
 endpoints:
-    enabled: true
+    enabled: false
     jmx:
         enabled: true
-        unique-names: true
 
 ---
 grails:
     cors:
         enabled: true
     mime:
-        # Enable Accept Header for User Agent Requests, see:
-        # http://mrhaki.blogspot.com/2014/07/grails-goodness-enable-accept-header.html
-        use:
-            accept:
-                header: true
         disable:
             accept:
                 header:
-                    userAgents: []
-#                        - Gecko
-#                        - WebKit
-#                        - Presto
-#                        - Trident
+                    userAgents:
+                        - Gecko
+                        - WebKit
+                        - Presto
+                        - Trident
         types:
-            all: '*/*'
+            json:
+              - application/json
+              - text/json   
+            hal:
+              - application/hal+json
+              - application/hal+xml  
+            xml:
+              - text/xml
+              - application/xml                                 
             atom: application/atom+xml
             css: text/css
             csv: text/csv
-            form: application/x-www-form-urlencoded
-            html:
-              - text/html
-              - application/xhtml+xml
             js: text/javascript
-            json:
-              - application/json
-              - text/json
-            multipartForm: multipart/form-data
-            pdf: application/pdf
             rss: application/rss+xml
             text: text/plain
-            hal:
-              - application/hal+json
-              - application/hal+xml
-            xml:
-              - text/xml
-              - application/xml
+            all: '*/*'            
     urlmapping:
         cache:
             maxsize: 1000
@@ -73,33 +63,19 @@ grails:
         defaultScope: singleton
     converters:
         encoding: UTF-8
-    views:
-        default:
-            codec: html
-        gsp:
-            encoding: UTF-8
-            htmlcodec: xml
-            codecs:
-                expression: html
-                scriptlets: html
-                taglib: none
-                staticparts: none
-
 
 ---
 hibernate:
     cache:
         queries: false
-        use_second_level_cache: true
+        use_second_level_cache: false
         use_query_cache: false
-        region.factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
-
 dataSource:
     pooled: true
     jmxExport: true
     driverClassName: org.h2.Driver
     username: sa
-    password:
+    password: ''
 
 environments:
     development:
@@ -134,7 +110,7 @@ environments:
                 defaultTransactionIsolation: 2 # TRANSACTION_READ_COMMITTED
 
 
-## global swagger info
+## Optional global swagger configuration
 swagger:
     info:
         description: "Example Web API"
@@ -152,10 +128,3 @@ swagger:
         - HTTP
     consumes:
         - "application/json"
-    securityDefinitions:
-        Bearer:
-            type: 'apiKey'
-            name: 'Authorization'
-server:
-    port: 9090
-
